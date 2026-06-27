@@ -1,0 +1,291 @@
+<!-- ═══════════════════════════════════════════════
+     KART 1 — NL→TR  (Tanıma + Tüm Teknik Detaylar)
+     Front: Dutch kelimesi
+     Back:  İngilizce (ana) + Türkçe (supplementary)
+            + tüm şemaya özel detaylar
+            + ses
+            + API log (bugün bu kart çalışıldı)
+     ═══════════════════════════════════════════════ -->
+
+<!-- ── FRONT TEMPLATE ── -->
+<div class="dd">
+  <div class="dd-front">
+    <div class="dd-front__word">{{Dutch}}</div>
+    {{#Schema}}<div class="dd-front__sub">{{Schema}}{{#Level}} · {{Level}}{{/Level}}</div>{{/Schema}}
+  </div>
+</div>
+
+
+<!-- ─────────────────────────────────────────────────────────────
+     BACK TEMPLATE
+     ───────────────────────────────────────────────────────────── -->
+{{FrontSide}}
+<hr id="answer">
+
+<div class="dd">
+
+  <!-- ── Header ── -->
+  <div class="dd-header">
+    <span class="dd-header__word">{{Dutch}}</span>
+    {{#Schema}}<span class="dd-badge dd-badge--schema">{{Schema}}</span>{{/Schema}}
+    {{#Level}}<span class="dd-badge dd-badge--level">{{Level}}</span>{{/Level}}
+    {{#FrequencyRank}}<span class="dd-badge dd-badge--rank">#{{FrequencyRank}}</span>{{/FrequencyRank}}
+  </div>
+  {{#IPA}}<div class="dd-ipa">/{{IPA}}/</div>{{/IPA}}
+
+  <!-- ── Translation: English MAIN, Turkish supplementary ── -->
+  <div class="dd-trans">
+    <div class="dd-trans__en">{{English}}</div>
+    {{#Turkish}}<div class="dd-trans__tr">🇹🇷 {{Turkish}}</div>{{/Turkish}}
+    {{#UsageNote}}<div class="dd-trans__note">💡 {{UsageNote}}</div>{{/UsageNote}}
+  </div>
+
+  <!-- ══════════════════════════
+       NOUN
+       ══════════════════════════ -->
+  {{#Article}}
+  <div class="dd-info">
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Artikel</span>
+      <span class="dd-info__val dd-info__val--acc">{{Article}} {{Dutch}}</span>
+    </div>
+    {{#Plural}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Meervoud</span>
+      <span class="dd-info__val">{{Plural}}</span>
+    </div>
+    {{/Plural}}
+    {{#Diminutive}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Verkleinw.</span>
+      <span class="dd-info__val">{{Diminutive}}</span>
+    </div>
+    {{/Diminutive}}
+    {{#OnlyPlural}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Let op</span>
+      <span class="dd-info__val dd-info__val--dim">Alleen meervoud</span>
+    </div>
+    {{/OnlyPlural}}
+    {{#DeHetRule}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Regel</span>
+      <span class="dd-info__val dd-info__val--dim">{{DeHetRule}}</span>
+    </div>
+    {{/DeHetRule}}
+  </div>
+  {{/Article}}
+
+  <!-- ══════════════════════════
+       VERB — Presens tablo
+       ══════════════════════════ -->
+  {{#PresensIK}}
+  <div class="dd-tbl-wrap">
+    <div class="dd-tbl-lbl">Presens</div>
+    <table class="dd-tbl">
+      <tr><td class="dd-tbl__pro">ik</td><td class="dd-tbl__frm">{{PresensIK}}</td>
+          <td class="dd-tbl__pro">wij / we</td><td class="dd-tbl__frm">{{PresensWIJ}}</td></tr>
+      <tr><td class="dd-tbl__pro">jij / je</td><td class="dd-tbl__frm">{{PresensJIJ}}</td>
+          <td class="dd-tbl__pro">jullie</td><td class="dd-tbl__frm">{{PresensJULLIE}}</td></tr>
+      <tr><td class="dd-tbl__pro">hij / zij / het</td><td class="dd-tbl__frm">{{PresensHIJ}}</td>
+          <td class="dd-tbl__pro">zij / ze</td><td class="dd-tbl__frm">{{PresensZIJ}}</td></tr>
+    </table>
+    {{#TRegel}}<div class="dd-rule dd-rule--blue" style="margin-top:0.4rem">⚙ t-regel: {{TRegel}}</div>{{/TRegel}}
+  </div>
+  {{/PresensIK}}
+
+  <!-- VERB — OVT düzenli (tek form) -->
+  {{#OVT}}{{^OVT_IK}}
+  <div class="dd-info">
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">OVT</span>
+      <span class="dd-info__val dd-info__val--acc">{{OVT}}</span>
+    </div>
+  </div>
+  {{/OVT_IK}}{{/OVT}}
+
+  <!-- VERB — OVT düzensiz (tablo) -->
+  {{#OVT_IK}}
+  <div class="dd-tbl-wrap">
+    <div class="dd-tbl-lbl">OVT (onregelmatig)</div>
+    <table class="dd-tbl">
+      <tr><td class="dd-tbl__pro">ik / jij / hij</td>
+          <td class="dd-tbl__frm dd-tbl__frm--hl">{{OVT_IK}}</td></tr>
+      <tr><td class="dd-tbl__pro">wij / jullie / zij</td>
+          <td class="dd-tbl__frm">{{OVT_WIJ}}</td></tr>
+    </table>
+    {{#OvtNote}}<div class="dd-rule dd-rule--orange" style="margin-top:0.4rem">⚡ {{OvtNote}}</div>{{/OvtNote}}
+  </div>
+  {{/OVT_IK}}
+
+  <!-- VERB — Perfectum -->
+  {{#Perfectum}}
+  <div class="dd-info">
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Perfectum</span>
+      <span class="dd-info__val dd-info__val--acc">{{AuxVerb}} {{Perfectum}}</span>
+    </div>
+    {{#GERule}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">ge-</span>
+      <span class="dd-info__val dd-info__val--dim">{{GERule}}</span>
+    </div>
+    {{/GERule}}
+  </div>
+  {{/Perfectum}}
+
+  <!-- VERB SEPARABLE — prefix + bijzin -->
+  {{#IsSeparable}}
+  <div class="dd-info">
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Prefix</span>
+      <span class="dd-info__val dd-info__val--acc">{{Prefix}}—</span>
+    </div>
+    {{#BijzinExample}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Bijzin</span>
+      <span class="dd-info__val dd-info__val--dim">{{BijzinExample}}</span>
+    </div>
+    {{/BijzinExample}}
+    {{#PerfectumRule}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">ge- regel</span>
+      <span class="dd-info__val dd-info__val--dim">{{PerfectumRule}}</span>
+    </div>
+    {{/PerfectumRule}}
+  </div>
+  {{/IsSeparable}}
+
+  <!-- VERB REFLEXIVE — sich tablo -->
+  {{#IsReflexive}}
+  <div class="dd-tbl-wrap">
+    <div class="dd-tbl-lbl">Reflexief (zich)</div>
+    <table class="dd-tbl">
+      <tr><td class="dd-tbl__pro">ik</td><td class="dd-tbl__frm">{{ReflexiveIK}}</td>
+          <td class="dd-tbl__pro">wij / we</td><td class="dd-tbl__frm">{{ReflexiveWIJ}}</td></tr>
+      <tr><td class="dd-tbl__pro">jij / je</td><td class="dd-tbl__frm">{{ReflexiveJIJ}}</td>
+          <td class="dd-tbl__pro">jullie</td><td class="dd-tbl__frm">{{ReflexiveJULLIE}}</td></tr>
+      <tr><td class="dd-tbl__pro">hij / zij / het</td><td class="dd-tbl__frm">{{ReflexiveHIJ}}</td>
+          <td class="dd-tbl__pro">zij / ze</td><td class="dd-tbl__frm">{{ReflexiveZIJ}}</td></tr>
+    </table>
+    {{#AlsoNonReflexive}}
+    <div class="dd-rule dd-rule--green" style="margin-top:0.4rem">
+      Ook niet-reflexief: <strong>{{NonReflexiveMeaning}}</strong>
+    </div>
+    {{/AlsoNonReflexive}}
+  </div>
+  {{/IsReflexive}}
+
+  <!-- VERB DUAL — twee betekenissen -->
+  {{#TurkishA}}
+  <div class="dd-info">
+    <div class="dd-info__sec">a) {{EnglishA}} · {{TurkishA}}</div>
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Type</span>
+      <span class="dd-info__val">{{MeaningAType}}</span>
+    </div>
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Perfectum</span>
+      <span class="dd-info__val dd-info__val--acc">{{MeaningAAuxVerb}} {{MeaningAPerfectum}}</span>
+    </div>
+    {{#MeaningAExample}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Vb.</span>
+      <span class="dd-info__val dd-info__val--dim">{{MeaningAExample}}</span>
+    </div>
+    {{/MeaningAExample}}
+    <div class="dd-info__sec">b) {{EnglishB}} · {{TurkishB}}</div>
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Type</span>
+      <span class="dd-info__val">{{MeaningBType}}</span>
+    </div>
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Perfectum</span>
+      <span class="dd-info__val dd-info__val--acc">{{MeaningBAuxVerb}} {{MeaningBPerfectum}}</span>
+    </div>
+    {{#MeaningBExample}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Vb.</span>
+      <span class="dd-info__val dd-info__val--dim">{{MeaningBExample}}</span>
+    </div>
+    {{/MeaningBExample}}
+  </div>
+  {{/TurkishA}}
+
+  <!-- ══════════════════════════
+       ADJECTIVE
+       ══════════════════════════ -->
+  {{#Comparative}}
+  <div class="dd-info">
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Vergrotend</span>
+      <span class="dd-info__val dd-info__val--acc">{{Comparative}}</span>
+    </div>
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Overtreffend</span>
+      <span class="dd-info__val dd-info__val--acc">{{Superlative}}</span>
+    </div>
+    {{#InflectieRule}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Inflectie</span>
+      <span class="dd-info__val dd-info__val--dim">{{InflectieRule}}</span>
+    </div>
+    {{/InflectieRule}}
+    {{#AlsoAdverb}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Ook bijwoord</span>
+      <span class="dd-info__val dd-info__val--ok">ja</span>
+    </div>
+    {{/AlsoAdverb}}
+    {{#OnlyPredicate}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Let op</span>
+      <span class="dd-info__val dd-info__val--dim">Alleen predicatief</span>
+    </div>
+    {{/OnlyPredicate}}
+  </div>
+  {{/Comparative}}
+
+  <!-- ══════════════════════════
+       CONJUNCTION / PREPOSITION
+       ══════════════════════════ -->
+  {{#WordOrder}}
+  <div class="dd-info">
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Volgorde</span>
+      <span class="dd-info__val">{{WordOrder}}</span>
+    </div>
+    {{#WordOrderNote}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Uitleg</span>
+      <span class="dd-info__val dd-info__val--dim">{{WordOrderNote}}</span>
+    </div>
+    {{/WordOrderNote}}
+    {{#ContrastWith}}
+    <div class="dd-info__row">
+      <span class="dd-info__lbl">Vs.</span>
+      <span class="dd-info__val dd-info__val--dim">{{ContrastWith}}</span>
+    </div>
+    {{/ContrastWith}}
+  </div>
+  {{/WordOrder}}
+
+  <!-- ── Example sentence ── -->
+  {{#ExampleNL}}
+  <div class="dd-ex">
+    <div class="dd-ex__nl">🇳🇱 {{ExampleNL}}</div>
+    {{#ExampleEN}}<div class="dd-ex__sub">🇬🇧 {{ExampleEN}}</div>{{/ExampleEN}}
+    {{#ExampleTR}}<div class="dd-ex__sub">🇹🇷 {{ExampleTR}}</div>{{/ExampleTR}}
+  </div>
+  {{/ExampleNL}}
+
+  <!-- ── Ses ── -->
+  {{#AudioURL}}[sound:{{AudioURL}}]{{/AudioURL}}
+
+  <!-- ── API LOG — Bu kart flip edilince Supabase'e yazar ──
+       SUPABASE_EDGE_URL'i kendi projen ile değiştir! -->
+  <img class="dd-log"
+       src="https://SUPABASE_EDGE_URL/functions/v1/log-practice?word={{Dutch}}&level={{Level}}&schema={{Schema}}"
+       onerror="void(0)">
+
+</div>

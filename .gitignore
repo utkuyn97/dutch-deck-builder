@@ -1,0 +1,25 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+dist/
+build/
+.next/
+.vercel
+*.log
+.DS_Store
+coverage/
+.pytest_cache/
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+
+# Project-specific: generated artifacts / large binaries
+exports/
+data/extracted-deck.json
+data/pipeline-errors.jsonl
+*.apkg
+*.anki2
+*.sqlite
+supabase/.temp/

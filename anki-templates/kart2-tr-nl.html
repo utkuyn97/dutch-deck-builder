@@ -1,0 +1,248 @@
+<!-- ═══════════════════════════════════════════════
+     KART 2 — TR→NL  (Üretim + Deterministic Quiz)
+     Front: English (ana) + Turkish (supplementary)
+     Back:  Dutch + minimal detay + QUIZ (JS, deterministic)
+     NOT: Bu kartta API log YOK — log NL→TR'de atılıyor
+     ═══════════════════════════════════════════════ -->
+
+<!-- ── FRONT TEMPLATE ── -->
+<div class="dd">
+  <div class="dd-front">
+    <div class="dd-front__word">{{English}}</div>
+    {{#Turkish}}<div class="dd-front__sub" style="font-size:0.875rem;color:#8888a0;text-transform:none;letter-spacing:0">🇹🇷 {{Turkish}}</div>{{/Turkish}}
+    {{#Schema}}<div class="dd-front__sub" style="margin-top:0.5rem">{{Schema}}{{#Level}} · {{Level}}{{/Level}}</div>{{/Schema}}
+  </div>
+</div>
+
+
+<!-- ─────────────────────────────────────────────────────────────
+     BACK TEMPLATE
+     ───────────────────────────────────────────────────────────── -->
+{{FrontSide}}
+<hr id="answer">
+
+<div class="dd">
+
+  <!-- ── Header ── -->
+  <div class="dd-header">
+    <span class="dd-header__word">{{Dutch}}</span>
+    {{#Schema}}<span class="dd-badge dd-badge--schema">{{Schema}}</span>{{/Schema}}
+    {{#Level}}<span class="dd-badge dd-badge--level">{{Level}}</span>{{/Level}}
+  </div>
+  {{#IPA}}<div class="dd-ipa">/{{IPA}}/</div>{{/IPA}}
+
+  <!-- ── Noun: artikel reminder ── -->
+  {{#Article}}
+  <div class="dd-trans" style="padding:0.6rem 0.875rem">
+    <span style="font-size:1.125rem;font-weight:700;color:#ff6b2c">{{Article}} {{Dutch}}</span>
+    {{#Plural}}<span style="font-size:0.875rem;color:#8888a0;margin-left:0.75rem">mv. {{Plural}}</span>{{/Plural}}
+  </div>
+  {{/Article}}
+
+  <!-- ── Verb: perfectum reminder ── -->
+  {{#Perfectum}}
+  <div class="dd-trans" style="padding:0.6rem 0.875rem">
+    <span style="font-size:1rem;font-weight:600;color:#ff6b2c">{{AuxVerb}} {{Perfectum}}</span>
+    {{#OVT}}<span style="font-size:0.875rem;color:#8888a0;margin-left:0.75rem">ovt: {{OVT}}</span>{{/OVT}}
+    {{#OVT_IK}}<span style="font-size:0.875rem;color:#8888a0;margin-left:0.75rem">ovt: {{OVT_IK}}</span>{{/OVT_IK}}
+  </div>
+  {{/Perfectum}}
+
+  <!-- ── Example ── -->
+  {{#ExampleNL}}
+  <div class="dd-ex">
+    <div class="dd-ex__nl">🇳🇱 {{ExampleNL}}</div>
+    {{#ExampleEN}}<div class="dd-ex__sub">🇬🇧 {{ExampleEN}}</div>{{/ExampleEN}}
+    {{#ExampleTR}}<div class="dd-ex__sub">🇹🇷 {{ExampleTR}}</div>{{/ExampleTR}}
+  </div>
+  {{/ExampleNL}}
+
+  <!-- ── Ses ── -->
+  {{#AudioURL}}[sound:{{AudioURL}}]{{/AudioURL}}
+
+  <!-- ══════════════════════════
+       QUIZ — Deterministic JS
+       Schema'ya göre sorular otomatik oluşur
+       Tap to reveal her soru
+       ══════════════════════════ -->
+  <div class="dd-quiz" id="dd-quiz-zone">
+    <div class="dd-quiz__title">Quiz</div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  // Field değerleri Anki template'den gelir
+  var F = {
+    schema:       "{{Schema}}".toLowerCase().trim(),
+    article:      "{{Article}}".trim(),
+    plural:       "{{Plural}}".trim(),
+    diminutive:   "{{Diminutive}}".trim(),
+    deHetRule:    "{{DeHetRule}}".trim(),
+    onlyPlural:   "{{OnlyPlural}}".trim(),
+
+    presensIK:    "{{PresensIK}}".trim(),
+    presensJIJ:   "{{PresensJIJ}}".trim(),
+    presensHIJ:   "{{PresensHIJ}}".trim(),
+    presensWIJ:   "{{PresensWIJ}}".trim(),
+
+    ovt:          "{{OVT}}".trim(),
+    ovtIK:        "{{OVT_IK}}".trim(),
+    ovtWIJ:       "{{OVT_WIJ}}".trim(),
+    ovtNote:      "{{OvtNote}}".trim(),
+
+    perfectum:    "{{Perfectum}}".trim(),
+    auxVerb:      "{{AuxVerb}}".trim(),
+    geRule:       "{{GERule}}".trim(),
+    tRegel:       "{{TRegel}}".trim(),
+
+    prefix:       "{{Prefix}}".trim(),
+    isSeparable:  "{{IsSeparable}}".trim(),
+    bijzin:       "{{BijzinExample}}".trim(),
+    perfectumRule:"{{PerfectumRule}}".trim(),
+
+    isReflexive:  "{{IsReflexive}}".trim(),
+    reflexIK:     "{{ReflexiveIK}}".trim(),
+    reflexHIJ:    "{{ReflexiveHIJ}}".trim(),
+    reflexWIJ:    "{{ReflexiveWIJ}}".trim(),
+    alsoNonRefl:  "{{AlsoNonReflexive}}".trim(),
+    nonReflMeaning:"{{NonReflexiveMeaning}}".trim(),
+
+    comparative:  "{{Comparative}}".trim(),
+    superlative:  "{{Superlative}}".trim(),
+    inflectie:    "{{InflectieRule}}".trim(),
+    alsoAdverb:   "{{AlsoAdverb}}".trim(),
+    onlyPred:     "{{OnlyPredicate}}".trim(),
+
+    wordOrder:    "{{WordOrder}}".trim(),
+    wordOrderNote:"{{WordOrderNote}}".trim(),
+    contrastWith: "{{ContrastWith}}".trim(),
+
+    turkishA:     "{{TurkishA}}".trim(),
+    englishA:     "{{EnglishA}}".trim(),
+    mAType:       "{{MeaningAType}}".trim(),
+    mAPerf:       "{{MeaningAPerfectum}}".trim(),
+    mAAux:        "{{MeaningAAuxVerb}}".trim(),
+
+    turkishB:     "{{TurkishB}}".trim(),
+    englishB:     "{{EnglishB}}".trim(),
+    mBType:       "{{MeaningBType}}".trim(),
+    mBPerf:       "{{MeaningBPerfectum}}".trim(),
+    mBAux:        "{{MeaningBAuxVerb}}".trim(),
+  };
+
+  function q(prompt, answer, note) {
+    if (!answer) return null;
+    return { prompt: prompt, answer: answer, note: note || "" };
+  }
+
+  // Schema'ya göre soru listesi oluştur
+  var questions = [];
+  var s = F.schema;
+
+  if (s === "noun") {
+    if (F.article)     questions.push(q("de mi, het mi?", F.article + " " + "{{Dutch}}", F.deHetRule));
+    if (F.plural)      questions.push(q("Meervoud (çoğul)?", F.plural, ""));
+    if (F.diminutive)  questions.push(q("Verkleinwoord (küçültme)?", F.diminutive, ""));
+    if (F.onlyPlural === "1") questions.push(q("Dikkat!", "Sadece meervoud kullanılır", ""));
+
+  } else if (s === "verb_regular") {
+    if (F.presensIK)   questions.push(q("ik — presens formu?", F.presensIK, ""));
+    if (F.presensJIJ)  questions.push(q("jij — presens formu?", F.presensJIJ, F.tRegel));
+    if (F.presensHIJ)  questions.push(q("hij/zij/het — presens formu?", F.presensHIJ, ""));
+    if (F.ovt)         questions.push(q("OVT (ik) formu?", F.ovt, ""));
+    if (F.perfectum)   questions.push(q("Perfectum (voltooid deelwoord)?", F.perfectum, ""));
+    if (F.auxVerb)     questions.push(q("Hebben mi, zijn mi?", F.auxVerb, ""));
+
+  } else if (s === "verb_irregular") {
+    if (F.presensIK)   questions.push(q("ik — presens formu?", F.presensIK, ""));
+    if (F.presensJIJ)  questions.push(q("jij — presens formu?", F.presensJIJ, ""));
+    if (F.ovtIK)       questions.push(q("OVT (ik) — onregelmatig?", F.ovtIK, F.ovtNote));
+    if (F.ovtWIJ)      questions.push(q("OVT (wij) — onregelmatig?", F.ovtWIJ, ""));
+    if (F.perfectum)   questions.push(q("Perfectum?", F.perfectum, ""));
+    if (F.auxVerb)     questions.push(q("Hebben mi, zijn mi?", F.auxVerb, ""));
+
+  } else if (s === "verb_separable") {
+    if (F.prefix)      questions.push(q("Scheidbaar prefix nedir?", F.prefix + "—", ""));
+    if (F.presensIK)   questions.push(q("ik — presens (ayrılmış) formu?", F.presensIK, "Prefix cümle sonuna gider"));
+    if (F.ovtIK)       questions.push(q("OVT (ik) formu?", F.ovtIK, ""));
+    else if (F.ovt)    questions.push(q("OVT (ik) formu?", F.ovt, ""));
+    if (F.perfectum)   questions.push(q("Perfectum?", F.perfectum, F.perfectumRule));
+    if (F.auxVerb)     questions.push(q("Hebben mi, zijn mi?", F.auxVerb, ""));
+    if (F.bijzin)      questions.push(q("Bijzin'de nasıl kullanılır?", F.bijzin, "Prefix ayrılmaz kalır"));
+
+  } else if (s === "verb_inseparable") {
+    if (F.prefix)      questions.push(q("Prefix (ayrılmaz) nedir?", F.prefix + "—", ""));
+    if (F.presensIK)   questions.push(q("ik — presens formu?", F.presensIK, ""));
+    if (F.ovtIK)       questions.push(q("OVT (ik) formu?", F.ovtIK, ""));
+    else if (F.ovt)    questions.push(q("OVT (ik) formu?", F.ovt, ""));
+    if (F.perfectum)   questions.push(q("Perfectum?", F.perfectum, F.geRule || "Inseparable prefix → ge- YOK"));
+    if (F.auxVerb)     questions.push(q("Hebben mi, zijn mi?", F.auxVerb, ""));
+
+  } else if (s === "verb_dual") {
+    questions.push(q("a) anlamı (İngilizce)?", F.englishA, F.mAType));
+    questions.push(q("a) perfectum?", F.mAAux + " " + F.mAPerf, ""));
+    questions.push(q("b) anlamı (İngilizce)?", F.englishB, F.mBType));
+    questions.push(q("b) perfectum?", F.mBAux + " " + F.mBPerf, "a) ve b) ge- kuralı farklı"));
+
+  } else if (s === "verb_reflexive") {
+    if (F.presensIK)   questions.push(q("ik — reflexief form?", F.reflexIK, ""));
+    if (F.reflexHIJ)   questions.push(q("hij/zij — reflexief form?", F.reflexHIJ, ""));
+    if (F.reflexWIJ)   questions.push(q("wij — reflexief form?", F.reflexWIJ, ""));
+    if (F.perfectum)   questions.push(q("Perfectum?", F.perfectum, ""));
+    if (F.auxVerb)     questions.push(q("Hebben mi, zijn mi?", F.auxVerb, ""));
+    if (F.alsoNonRefl === "1" && F.nonReflMeaning)
+                       questions.push(q("Niet-reflexief anlamı?", F.nonReflMeaning, ""));
+
+  } else if (s === "adjective") {
+    if (F.comparative) questions.push(q("Vergrotende trap (comparative)?", F.comparative, ""));
+    if (F.superlative) questions.push(q("Overtreffende trap (superlative)?", F.superlative, ""));
+    if (F.inflectie)   questions.push(q("Inflectie kuralı?", "", F.inflectie));
+    if (F.alsoAdverb === "1") questions.push(q("Bijwoord olarak da kullanılır mı?", "Ja", ""));
+    if (F.onlyPred === "1")   questions.push(q("Attributief kullanılır mı?", "Nee — alleen predicatief", ""));
+
+  } else if (s === "conjunction") {
+    if (F.wordOrder)     questions.push(q("Woordvolgorde etkisi?", F.wordOrder, F.wordOrderNote));
+    if (F.contrastWith)  questions.push(q("Hangi bağlaçla karşılaştırılır?", F.contrastWith, ""));
+
+  } else if (s === "preposition") {
+    // Preposition: sadece örnek cümle yeterli, quiz yok
+    // Quiz zone boş bırakılır
+  } else if (s === "adverb") {
+    // Adverb: quiz yok
+  }
+
+  // Quiz'i render et
+  var zone = document.getElementById("dd-quiz-zone");
+  if (!zone || questions.length === 0) {
+    if (zone) zone.style.display = "none";
+    return;
+  }
+
+  questions.forEach(function(item, i) {
+    if (!item) return;
+    var div = document.createElement("div");
+    div.className = "dd-q";
+    div.id = "ddq-" + i;
+    div.innerHTML =
+      '<div class="dd-q__prompt">' + escH(item.prompt) + '</div>' +
+      '<div class="dd-q__tap" onclick="ddReveal(this)">' +
+        '<span class="dd-q__btn">Göster</span>' +
+        (item.answer ? '<span style="font-size:0.8rem;color:#55556a">Cevabı gör →</span>' : '') +
+      '</div>' +
+      (item.answer ? '<div class="dd-q__ans">' + escH(item.answer) + '</div>' : '') +
+      (item.note   ? '<div class="dd-q__note">💡 ' + escH(item.note) + '</div>' : '');
+    zone.appendChild(div);
+  });
+
+  function escH(s) {
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+})();
+
+function ddReveal(el) {
+  var q = el.parentElement;
+  q.classList.toggle("dd-q--open");
+}
+</script>

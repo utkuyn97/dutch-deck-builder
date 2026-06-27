@@ -1,0 +1,119 @@
+<!-- ═══════════════════════════════════════════════════
+     DutchDeck — GRAMER KARTLARI (Sadeleştirilmiş)
+     
+     Anki'de sadece kural/kavram kartları.
+     Egzersizler PWA chatbox'ta AI ile yapılır.
+     
+     Her konu 3 kart:
+     Kart 1: Kural Kartı (ne, neden, nasıl)
+     Kart 2: Örnek Tanıma (NL → anlam)
+     Kart 3: Hızlı Kural Quiz (tek soru)
+     ═══════════════════════════════════════════════════ -->
+
+
+<!-- ══════════════════════════════════════
+     KART 1 — Kural Kartı
+     ══════════════════════════════════════ -->
+
+<!-- FRONT -->
+<div class="dd">
+  <div class="dd-front">
+    <div style="font-size:0.6875rem;color:#55556a;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem">Gramer · {{Level}}</div>
+    <div class="dd-front__word" style="font-size:1.875rem;text-align:center;line-height:1.2">{{Topic}}</div>
+    {{#Category}}<div class="dd-front__sub" style="margin-top:0.375rem">{{Category}}</div>{{/Category}}
+  </div>
+</div>
+
+<!-- BACK -->
+{{FrontSide}}<hr id="answer">
+<div class="dd">
+  <div class="dd-header">
+    <span class="dd-header__word">{{Topic}}</span>
+    <span class="dd-badge dd-badge--level">{{Level}}</span>
+    {{#Category}}<span class="dd-badge dd-badge--schema">{{Category}}</span>{{/Category}}
+  </div>
+
+  <div class="dd-rule dd-rule--blue" style="font-size:0.875rem;line-height:1.65">{{Rule}}</div>
+  {{#RuleNote}}<div class="dd-rule dd-rule--orange">💡 {{RuleNote}}</div>{{/RuleNote}}
+  {{#CommonMistake}}<div class="dd-rule dd-rule--red">❌ {{CommonMistake}}</div>{{/CommonMistake}}
+
+  {{#Example1NL}}
+  <div class="dd-ex">
+    <div class="dd-ex__nl">🇳🇱 {{Example1NL}}</div>
+    {{#Example1TR}}<div class="dd-ex__sub">🇹🇷 {{Example1TR}}</div>{{/Example1TR}}
+  </div>
+  {{/Example1NL}}
+  {{#Example2NL}}
+  <div class="dd-ex">
+    <div class="dd-ex__nl">🇳🇱 {{Example2NL}}</div>
+    {{#Example2TR}}<div class="dd-ex__sub">🇹🇷 {{Example2TR}}</div>{{/Example2TR}}
+  </div>
+  {{/Example2NL}}
+
+  <!-- API log — Kart 1'de bir kez -->
+  <img class="dd-log"
+       src="https://SUPABASE_EDGE_URL/functions/v1/log-practice?word={{Topic}}&level={{Level}}&schema=grammar"
+       onerror="void(0)">
+</div>
+
+
+<!-- ══════════════════════════════════════
+     KART 2 — Örnek Tanıma
+     ══════════════════════════════════════ -->
+{{#Example3NL}}
+
+<!-- FRONT -->
+<div class="dd">
+  <div class="dd-front">
+    <div style="font-size:0.6875rem;color:#55556a;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem">{{Topic}} · Örnek</div>
+    <div style="font-size:1.125rem;color:#f0f0f5;text-align:center;line-height:1.6;max-width:320px;font-style:italic">🇳🇱 {{Example3NL}}</div>
+    <div class="dd-front__sub" style="margin-top:0.75rem">{{Level}} · Bu cümledeki gramer kuralı nedir?</div>
+  </div>
+</div>
+
+<!-- BACK -->
+{{FrontSide}}<hr id="answer">
+<div class="dd">
+  <div class="dd-header">
+    <span class="dd-header__word">{{Topic}}</span>
+    <span class="dd-badge dd-badge--level">{{Level}}</span>
+  </div>
+  <div class="dd-ex">
+    <div class="dd-ex__nl">🇳🇱 {{Example3NL}}</div>
+    {{#Example3TR}}<div class="dd-ex__sub">🇹🇷 {{Example3TR}}</div>{{/Example3TR}}
+  </div>
+  <div class="dd-rule dd-rule--blue" style="font-size:0.8rem">{{Rule}}</div>
+  {{#RuleNote}}<div class="dd-rule dd-rule--orange" style="font-size:0.8rem">{{RuleNote}}</div>{{/RuleNote}}
+</div>
+
+{{/Example3NL}}
+
+
+<!-- ══════════════════════════════════════
+     KART 3 — Hızlı Kural Quiz
+     ══════════════════════════════════════ -->
+{{#RuleQ1}}
+
+<!-- FRONT -->
+<div class="dd">
+  <div class="dd-front">
+    <div style="font-size:0.6875rem;color:#55556a;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem">{{Topic}} · Kural</div>
+    <div style="font-size:1.125rem;color:#f0f0f5;text-align:center;line-height:1.6;max-width:320px">{{RuleQ1}}</div>
+    <div class="dd-front__sub" style="margin-top:0.75rem">{{Level}}</div>
+  </div>
+</div>
+
+<!-- BACK -->
+{{FrontSide}}<hr id="answer">
+<div class="dd">
+  <div class="dd-header">
+    <span class="dd-header__word">{{Topic}}</span>
+    <span class="dd-badge dd-badge--level">{{Level}}</span>
+  </div>
+  <div class="dd-trans">
+    <div class="dd-trans__en" style="color:#4ade80">{{RuleA1}}</div>
+  </div>
+  {{#RuleNote1}}<div class="dd-rule dd-rule--blue">💡 {{RuleNote1}}</div>{{/RuleNote1}}
+</div>
+
+{{/RuleQ1}}

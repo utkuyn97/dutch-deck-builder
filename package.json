@@ -1,0 +1,32 @@
+{
+  "name": "dutchdeck",
+  "version": "2.0.0",
+  "description": "Personal Dutch-learning PWA — frequency-ranked NL↔EN flashcards with AI-generated voice, exportable to Anki.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:s1": "node tests/sprint-01-runner.cjs",
+    "test:s2": "node tests/sprint-02-runner.js"
+  },
+  "keywords": ["dutch", "flashcards", "anki", "elevenlabs", "spaced-repetition", "pwa"],
+  "author": "Utku Yalinbas",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.91.0",
+    "@supabase/supabase-js": "^2.104.1",
+    "adm-zip": "^0.5.17",
+    "better-sqlite3": "^12.9.0",
+    "dotenv": "^17.4.2",
+    "fzstd": "^0.1.1",
+    "jszip": "^3.10.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "sql.js": "^1.14.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "vite": "^6.3.3"
+  }
+}
