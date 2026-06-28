@@ -21,6 +21,25 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-dd-token",
 };
 
+// ── Simple in-memory rate limit (per client IP) ────────
+// Mitigates abuse of this Claude proxy if the app token is extracted from the
+// public bundle. Note: in-memory state resets on cold start and isn't shared across
+// instances — a best-effort throttle, not a hard guarantee.
+const RATE_LIMIT = 20; // requests
+const RATE_WINDOW_MS = 60_000; // per minute, per IP
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return true;
+  }
+  entry.count++;
+  return entry.count <= RATE_LIMIT;
+}
+
 // ── Prompt builders ────────────────────────────────────
 
 function wordAssignmentPrompt(p: any): string {
@@ -153,6 +172,12 @@ serve(async (req) => {
     const expectedToken = Deno.env.get("DD_API_TOKEN") || "";
     if (!expectedToken || authToken !== expectedToken) {
       return jsonResponse({ error: "Unauthorized" }, 401);
+    }
+
+    // ── Rate limit (per IP) ──
+    const ip = (req.headers.get("x-forwarded-for") || "unknown").split(",")[0].trim();
+    if (!checkRateLimit(ip)) {
+      return jsonResponse({ error: "Rate limit exceeded. Try again shortly." }, 429);
     }
 
     const body = await req.json();
