@@ -4,6 +4,18 @@ A personal Dutch-learning system that turns a frequency-ranked word list into a
 fully-voiced, bidirectional flashcard deck — generated with Claude, voiced with
 ElevenLabs, and exportable straight into Anki as a `.apkg`.
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/home.png" width="45%" alt="The day's frequency-ranked words and grammar topics" />
+  &nbsp;&nbsp;
+  <img src="docs/practice.png" width="45%" alt="AI-generated practice scenario for a word" />
+</p>
+
+<p align="center"><em>Left — the day's frequency-ranked words + grammar topics. Right — an
+AI-generated practice scenario (Claude): you write the Dutch sentence and get feedback;
+each card is voiced by ElevenLabs. <sub>(demo data)</sub></em></p>
+
 ## What it does
 
 Learning Dutch vocabulary well needs three things that off-the-shelf decks rarely
