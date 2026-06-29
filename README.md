@@ -37,7 +37,8 @@ the spaced-repetition (SM-2) scheduling.
 ## Tech stack
 
 - **Frontend:** React 19 + Vite (installable PWA), vanilla CSS design tokens
-- **Backend / data:** Supabase — Postgres, Storage (audio), Edge Functions (Deno)
+- **Backend / data:** Supabase — Postgres, Storage (audio), Edge Functions (Deno).
+  *(An earlier local-only build kept the deck in IndexedDB; persistence later moved to Supabase.)*
 - **AI / APIs:**
   - **ElevenLabs** — per-card text-to-speech audio generation, batched & cached
   - **Anthropic Claude** (`claude-sonnet-4-6`) — structured flashcard generation
@@ -47,13 +48,14 @@ the spaced-repetition (SM-2) scheduling.
 
 - **ElevenLabs voice generation at scale.** Audio is generated once per card in
   batched runs (configurable `BATCH_SIZE` / `BATCH_DELAY_MS`), persisted to Supabase
-  Storage, and referenced from Anki cards via `[sound:…]` tags — so a ~5k-card deck
+  Storage, and referenced from Anki cards via `[sound:…]` tags — so the whole deck
   becomes fully voiced without re-hitting the API on every study session. The full
-  production deck is ~5,000 frequency-ranked cards (extended to bidirectional notes
-  in Anki).
+  production deck is **~8,715 AI-generated bidirectional cards (NL↔EN) across 46
+  categories**, frequency-ranked.
 - **Bidirectional cards from a single source.** Each word produces both an NL→EN and
-  an EN/TR→NL Anki template (see [`anki-templates/`](anki-templates/)), with separate
-  example fields per direction, generated from one Claude-built record.
+  an EN→NL Anki note (see [`anki-templates/`](anki-templates/)), with separate
+  example fields per direction, generated from one Claude-built record — a two-note
+  bidirectional system.
 - **Programmatic `.apkg` export.** Rather than relying on Anki's UI, the deck is built
   at the SQLite level (`sql.js`) and zipped into a valid `.apkg` — reproducible and
   scriptable. See [`scripts/build-apkg.cjs`](scripts/build-apkg.cjs).
